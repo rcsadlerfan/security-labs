@@ -1,3 +1,0 @@
----
-kinds:
-  - yaml: "**/*.ansible.yml"
