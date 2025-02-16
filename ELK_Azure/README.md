@@ -3,6 +3,7 @@ This repo contains the Terraform and Ansible playbooks to spin up an Elastic Sec
 
 ## Lab Objectives
 ### Setup Fleet
+
 ### Search Data in Kibana
 ### Create a Detection
 
