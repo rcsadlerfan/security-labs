@@ -13,7 +13,6 @@ variable "location" {
 variable "pass" {
   type = string
   sensitive = true
-  ephemeral = true
   description = "Password to use when provisioning the virtual machines. This value WILL NOT be stored, so you MUST enter it every time you run the Terraform playbooks"
 }
 
