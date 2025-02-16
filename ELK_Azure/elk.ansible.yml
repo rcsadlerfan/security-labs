@@ -1,0 +1,57 @@
+- name: ELK Setup
+  become: yes
+
+  tasks:
+  - name: Remove pre-existing packages
+    ansible.builtin.package:
+      name:
+      - docker.io
+      - docker-doc
+      - docker-compose
+      - docker-compose-v2
+      - podman-docker
+      - containerd
+      - runc
+      state: absent
+      
+  - name: Install pre-requisites
+    ansible.builtin.package:
+      name: 
+      - curl
+      - ca-certificates
+      state: present
+    
+  - name: Setup keyrings
+    ansible.builtin.command:
+      cmd: sudo install -m 0755 -d /etc/apt/keyrings
+
+  - name: Download Docker CA
+    ansible.builtin.command:
+      cmd: sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  
+  - name: Setup Docker CA file permissions
+    ansible.builtin.command:
+      cmd: sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+  - name: Add Docker APT repo source
+    ansible.builtin.command:
+      cmd: echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  - name: Install Docker Engine
+    ansible.builtin.package:
+      name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+      state: present
+
+  - name: Copy Docker Compose file
+    ansible.builtin.copy:
+      src: ./docker-compose.yml
+      dest: /home/elkadmin/docker-compose.yml
+
+  - name: Spin up Docker infrastructure
+    ansible.builtin.command:
+      cmd: sudo docker compose up -d

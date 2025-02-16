@@ -1,0 +1,11 @@
+version: ""
+
+services:
+  elasticsearch:
+    image: ""
+
+  kibana:
+    image: ""
+
+networks:
+  elk:
