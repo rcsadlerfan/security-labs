@@ -21,6 +21,6 @@ resource "azurerm_virtual_network" "grafana_vnet" {
 resource "azurerm_subnet" "grafana_snet" {
   name = "${var.slug}_snet"
   resource_group_name = azurerm_resource_group.grafana_rg.name
+  virtual_network_name = azurerm_virtual_network.grafana_vnet.name
   address_prefixes = [ "192.168.254.0/24" ]
-  virtual_network_name = azurerm_virtual_network.grafana_rg.name
 }
